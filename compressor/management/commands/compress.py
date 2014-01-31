@@ -298,7 +298,10 @@ class Command(NoArgsCommand):
         return getattr(node, "nodelist", [])
 
     def walk_nodes(self, node, block_name=None):
-        for node in self.get_nodelist(node):
+        nodelist = self.get_nodelist(node)
+        if not nodelist:
+            return
+        for node in nodelist:
             if isinstance(node, BlockNode):
                 block_name = node.name
             if isinstance(node, CompressorNode) and node.is_offline_compression_enabled(forced=True):
